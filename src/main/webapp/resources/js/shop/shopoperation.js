@@ -10,12 +10,12 @@ $(function () {
     var initUrl = '/o2o/shopadmin/getshopinitinfo';
     var registerShopUrl = '/o2o/shopadmin/registershop';
 
-    var shopInfoUrl = '/o2o/shopadmin/getshopbyid?' + shopId;
+    var shopInfoUrl = '/o2o/shopadmin/getshopbyid?shopId=' + shopId;
     var editShopUrl = '/o2o/shop/modifyshop';
     if (!isEdit) {
         getShopInitInfo()
     } else {
-        getShopInfo();
+        getShopInfo(shopId);
     }
     function getShopInfo(shopId) {
         $.getJSON(shopInfoUrl, function (data) {

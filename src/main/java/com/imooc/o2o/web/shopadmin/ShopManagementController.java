@@ -14,6 +14,7 @@ import com.imooc.o2o.util.CodeUtil;
 import com.imooc.o2o.util.HttpServletRequestUtil;
 import com.imooc.o2o.util.ImageUtil;
 import com.imooc.o2o.util.PathUtil;
+import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,6 +43,65 @@ public class ShopManagementController {
     private AreaService areaService;
 
 
+    /**
+     * 过滤直接访问页面的请求
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "getshopmanagementinfo", method = RequestMethod.GET)
+    private Map<String, Object> getShopManagementInfo(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+        long shopId = HttpServletRequestUtil.getLong(request, "shopId");
+        if (shopId <= 0) {
+            Object currentShopObj = request.getSession().getAttribute("currentShopObj");
+            if (currentShopObj == null) {
+                modelMap.put("redirect", true);
+                modelMap.put("url", "/o2o/shopadmin/shoplist");
+            } else {
+                Shop currentShop = (Shop) currentShopObj;
+                modelMap.put("redirect", false);
+                modelMap.put("shopId", currentShop.getShopId());
+            }
+        } else {
+            Shop currentShop = new Shop();
+            currentShop.setShopId(shopId);
+            request.getSession().setAttribute("currentShop", currentShop);
+            modelMap.put("redirect", false);
+
+        }
+        return modelMap;
+    }
+
+    @RequestMapping(value = "/getshoplist", method = RequestMethod.GET)
+    private Map<String, Object> getShopList(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+
+        /**
+         * 这里是为了保证 在现在的情况下 有值
+         */
+        PersonInfo user = new PersonInfo();
+        user.setUserId(1L);
+        request.getSession().setAttribute("user", user);
+        PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
+
+        List<Shop> shopList = new ArrayList<Shop>();
+        try {
+            Shop shopCondition = new Shop();
+            shopCondition.setOwner(owner);
+            ShopExecution shopExecution = shopService.getShopList(shopCondition, 0, 100);
+            modelMap.put("shopList", shopExecution.getShopList());
+            modelMap.put("success", true);
+            modelMap.put("user", user);
+
+        } catch (Exception e) {
+            modelMap.put("success", false);
+            modelMap.put("errMsg", e.getMessage());
+        }
+        return modelMap;
+    }
+
+
     @RequestMapping(value = "getshopinitinfo", method = RequestMethod.GET)
     public Map<String, Object> getShopInitInfo() {
         Map<String, Object> modelMap = new HashMap<String, Object>();
@@ -61,6 +121,7 @@ public class ShopManagementController {
         return modelMap;
     }
 
+    @RequestMapping(value = "getshopbyid", method = RequestMethod.GET)
     private Map<String, Object> getShopById(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<String, Object>();
         Long shopId = HttpServletRequestUtil.getLong(request, "shopId");
@@ -72,6 +133,7 @@ public class ShopManagementController {
                 modelMap.put("areaList", areaList);
                 modelMap.put("success", true);
             } catch (Exception e) {
+                e.printStackTrace();
                 modelMap.put("success", false);
                 modelMap.put("errMsg", e.toString());
             }
@@ -191,10 +253,12 @@ public class ShopManagementController {
                 if (se.getState() == ShopStateEnum.CHECK.getState()) {
                     modelMap.put("success", true);
                     // 该用户可操作的店铺列表
+                    @SuppressWarnings("unchecked")
                     List<Shop> shopList = (List<Shop>) request.getSession().getAttribute("shopList");
                     if (shopList == null || shopList.size() == 0) {
                         shopList = new ArrayList<Shop>();
                     }
+                    shopList.add(se.getShop());
                     request.getSession().setAttribute("shopList", shopList);
                 } else {
                     modelMap.put("success", false);

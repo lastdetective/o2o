@@ -26,7 +26,7 @@
             <result column="name" property="name"/>
         </association>
     </resultMap>
-    <select id="queryByShopId" resultMap="shopMap" parameterType="String">
+    <select id="queryByShopId" resultMap="shopMap" parameterType="Long">
         SELECT s.shop_id,
                s.shop_name,
                s.shop_desc,
@@ -41,11 +41,11 @@
                a.area_id,
                a.area_name,
                sc.shop_category_id,
-               sc.shop_category_name,
-               from tb_shop sa ,tb_area a ,tb_shop_category sc
+               sc.shop_category_name
+               from tb_shop s ,tb_area a ,tb_shop_category sc
                where s.area_id = a.area_id
                and s.shop_category_id = sc.shop_category_id
-               and s.shop_id = #{shop_id}
+               and s.shop_id = #{shopId}
     </select>
     <insert id="insertShop" useGeneratedKeys="true" keyColumn="shop_id" keyProperty="shopId">
 INSERT INTO `o2o`.`tb_shop` (
@@ -101,4 +101,101 @@ VALUES
             shop_id= #{shopId}
         </where>
     </update>
+
+    <select id="queryShopList" resultMap="shopMap" >
+        SELECT
+        shop_id,
+        owner_id,
+        area_id,
+        shop_category_id,
+        parent_category_id,
+        shop_name,
+        shop_desc,
+        shop_addr,
+        phone,
+        shop_img,
+        longitude,
+        latitude,
+        priority,
+        create_time,
+        last_edit_time,
+        enable_status,
+        advice
+        FROM
+        tb_shop
+        <where>
+            <if test="shopCondition.shopId!=null">
+                and shop_id = #{shopCondition.shopId}
+            </if>
+           <!-- <if
+                    test="shopCondition.shopCategory!=null
+				 and shopCondition.shopCategory.shopCategoryId!=null">
+                and shop_category_id =
+                #{shopCondition.shopCategory.shopCategoryId}
+            </if>
+            <if
+                    test="shopCondition.parentCategory!=null
+				 and shopCondition.parentCategory.shopCategoryId!=null">
+                and parent_category_id =
+                #{shopCondition.parentCategory.shopCategoryId}
+            </if>-->
+            <if
+                    test="shopCondition.area!=null
+				 and shopCondition.area.areaId!=null">
+                and area_id =
+                #{shopCondition.area.areaId}
+            </if>
+            <!-- 写like语句的时候 一般都会写成 like '% %' 在mybatis里面写就是应该是 like '%${name} %' 而不是
+                '%#{name} %' ${name} 是不带单引号的，而#{name} 是带单引号的 -->
+            <if test="shopCondition.shopName!=null">
+                and shop_name like '%${shopCondition.shopName}%'
+            </if>
+            <if test="shopCondition.enableStatus!=null">
+                and enable_status = #{shopCondition.enableStatus}
+            </if>
+        </where>
+        ORDER BY
+        priority DESC
+        LIMIT #{rowIndex},#{pageSize};
+    </select>
+
+    <select id="queryShopCount" resultType="int">
+        SELECT
+        count(1)
+        FROM
+        tb_shop
+        <where>
+            <if test="shopCondition.shopId!=null">
+                and shop_id = #{shopCondition.shopId}
+            </if>
+
+            <!--
+            <if
+                    test="shopCondition.shopCategory!=null
+				 and shopCondition.shopCategory.shopCategoryId!=null">
+                and shop_category_id =
+                #{shopCondition.shopCategory.shopCategoryId}
+            </if>
+            <if
+                    test="shopCondition.parentCategory!=null
+				 and shopCondition.parentCategory.shopCategoryId!=null">
+                and parent_category_id =
+                #{shopCondition.parentCategory.shopCategoryId}
+            </if>-->
+            <if
+                    test="shopCondition.area!=null
+				 and shopCondition.area.areaId!=null">
+                and area_id =
+                #{shopCondition.area.areaId}
+            </if>
+            <!-- 写like语句的时候 一般都会写成 like '% %' 在mybatis里面写就是应该是 like '%${name} %' 而不是
+                '%#{name} %' ${name} 是不带单引号的，而#{name} 是带单引号的 -->
+            <if test="shopCondition.shopName!=null">
+                and shop_name like '%${shopCondition.shopName}%'
+            </if>
+            <if test="shopCondition.enableStatus!=null">
+                and enable_status = #{shopCondition.enableStatus}
+            </if>
+        </where>
+    </select>
 </mapper>

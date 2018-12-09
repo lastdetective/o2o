@@ -11,8 +11,10 @@ public interface ShopDao {
      * 店铺名（模糊），店铺状态，店铺类别，区域ID，owner
      */
     List<Shop> queryShopList(@Param("shopCondition") Shop shopCondition,
-                             @Param("pageSize") int pageSize,
-                             @Param("pageNum") int pageNum);
+                             @Param("rowIndex") int rowIndex,
+                             @Param("pageSize") int pageSize);
+
+    int queryShopCount(@Param("shopCondition") Shop shopCondition);
 
     /**
      * 新增店铺
@@ -29,5 +31,5 @@ public interface ShopDao {
     int updateShop(Shop shop);
 
 
-    Shop queryByShopId(long shopId);
+    Shop queryByShopId(@Param("shopId") long shopId);
 }

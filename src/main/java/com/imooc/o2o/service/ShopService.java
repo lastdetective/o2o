@@ -16,4 +16,12 @@ public interface ShopService {
 
     ShopExecution modifyShop(Shop shop, InputStream shopInputStream, String fileName) throws ShopOperationException;
 
+    /**
+     * 根据shop
+     * @param shop
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    ShopExecution getShopList(Shop shop, int pageIndex, int pageSize);
 }

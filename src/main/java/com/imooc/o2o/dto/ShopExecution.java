@@ -2,11 +2,15 @@ package com.imooc.o2o.dto;
 
 import com.imooc.o2o.entity.Shop;
 import com.imooc.o2o.enums.ShopStateEnum;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class ShopExecution {
 
     // 结果状态
@@ -19,10 +23,6 @@ public class ShopExecution {
     private Shop shop;
 
     private List<Shop> shopList;
-
-    public ShopExecution() {
-
-    }
 
     /**
      * 店铺操作失败时使用的构造器
