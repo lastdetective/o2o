@@ -2,7 +2,6 @@
  *
  *
  */
-
 $(function () {
     var shopId = getQueryString("shopId");
     var isEdit = shopId ? true : false;
@@ -11,7 +10,7 @@ $(function () {
     var registerShopUrl = '/o2o/shopadmin/registershop';
 
     var shopInfoUrl = '/o2o/shopadmin/getshopbyid?shopId=' + shopId;
-    var editShopUrl = '/o2o/shop/modifyshop';
+    var editShopUrl = '/o2o/shopadmin/modifyshop';
     if (!isEdit) {
         getShopInitInfo()
     } else {
@@ -38,7 +37,7 @@ $(function () {
                 $("#shop-category").html(shopCategory);
                 $("#shop-category").attr("disabled", "disabled");
                 $("#area").html(tempAreaHtml);
-                $("#area option[data-id='" + shop.area.areaId + "']").attr('selected', selected);
+                $("#area option[data-id='" + shop.area.areaId + "']").attr('selected', 'selected');
             }
 
         });
@@ -56,7 +55,7 @@ $(function () {
                         + item.shopCategoryName + '</option>'
                 });
                 data.areaList.map(function (item, index) {
-                    tempAreaHtml += '<option data-id' + item.areaId + '">'
+                    tempAreaHtml += '<option data-id=" ' + item.areaId + '">'
                         + item.areaName + '</option>'
                 });
                 $('#shop-category').html(tempHtml);
@@ -83,10 +82,10 @@ $(function () {
                     return !this.selected;
                 }).data("id")
             };
+
         shop.area = {
             areaId: $("#area").find("option").not(function () {
-
-                return !this.selected
+                return !this.selected;
             }).data("id")
 
         };
@@ -100,12 +99,7 @@ $(function () {
             $.toast("请输入验证码");
             return;
         }
-        console.log(verifyCodeActual);
         formData.append("verifyCodeActual", verifyCodeActual);
-
-        console.log(JSON.stringify(formData))
-
-        console.log("get一下" + formData.get("verifyCodeActual"));
         $.ajax({
             url: isEdit ? editShopUrl : registerShopUrl,
             type: 'post',

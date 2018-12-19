@@ -50,8 +50,7 @@ public class ShopManagementController {
      * @return
      */
     @RequestMapping(value = "getshopmanagementinfo", method = RequestMethod.GET)
-    private Map<String, Object> getShopManagementInfo(HttpServletRequest request) {
-        Map<String, Object> modelMap = new HashMap<String, Object>();
+    private Map<String, Object> getShopManagementInfo(HttpServletRequest request) { Map<String, Object> modelMap = new HashMap<String, Object>();
         long shopId = HttpServletRequestUtil.getLong(request, "shopId");
         if (shopId <= 0) {
             Object currentShopObj = request.getSession().getAttribute("currentShopObj");
@@ -145,7 +144,6 @@ public class ShopManagementController {
     @RequestMapping(value = "/modifyshop", method = RequestMethod.POST)
     private Map<String, Object> modifyShop(HttpServletRequest request) {
         Map<String, Object> modelMap = new HashMap<String, Object>();
-        String inputCode = request.getParameter("verifyCodeActual");
         // 1.接收并返回相应的参数
         if (!CodeUtil.checkVerifyCode(request)) {
             modelMap.put("success", false);
@@ -242,13 +240,12 @@ public class ShopManagementController {
             }
             ShopExecution se = null;
             try {
-                if (se.getState() == ShopStateEnum.CHECK.getState()) {
+                /*if (se.getState() == ShopStateEnum.CHECK.getState()) {
                     modelMap.put("success", true);
                 } else {
                     modelMap.put("success", false);
                     modelMap.put("errMsg", se.getStateInfo());
-                }
-                // 这样不直接传shopImg 是考虑到这样不用穿CommonsMutilfiel 不然单元测试成本太大
+                }*/
                 se = shopService.addShop(shop, shopImg.getInputStream(), shopImg.getOriginalFilename());
                 if (se.getState() == ShopStateEnum.CHECK.getState()) {
                     modelMap.put("success", true);
@@ -265,6 +262,7 @@ public class ShopManagementController {
                     modelMap.put("errMsg", se.getStateInfo());
                 }
             } catch (IOException e) {
+                e.printStackTrace();
                 modelMap.put("success", false);
                 modelMap.put("errMsg", e.getMessage());
             }
@@ -276,33 +274,5 @@ public class ShopManagementController {
             return modelMap;
         }
     }
-
- /*   private static void inputStreamToFile(InputStream ins, File file) {
-        FileOutputStream outputStream = null;
-        try {
-
-            outputStream = new FileOutputStream(file);
-            int bytesRead = 0;
-            byte[] buffer = new byte[1024];
-            while ((bytesRead = ins.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("调用inputStreamToFile异常"
-                    + e.getMessage());
-        } finally {
-            try {
-                if (outputStream != null) {
-                    outputStream.close();
-                }
-                if (ins != null) {
-                    ins.close();
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("inputStreamToFile关闭io产生异常" + e.getMessage());
-            }
-        }
-
-    }*/
 }
 

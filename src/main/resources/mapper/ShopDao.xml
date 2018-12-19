@@ -102,7 +102,7 @@ VALUES
         </where>
     </update>
 
-    <select id="queryShopList" resultMap="shopMap" >
+    <select id="queryShopList" resultMap="shopMap">
         SELECT
         shop_id,
         owner_id,
@@ -127,20 +127,7 @@ VALUES
             <if test="shopCondition.shopId!=null">
                 and shop_id = #{shopCondition.shopId}
             </if>
-           <!-- <if
-                    test="shopCondition.shopCategory!=null
-				 and shopCondition.shopCategory.shopCategoryId!=null">
-                and shop_category_id =
-                #{shopCondition.shopCategory.shopCategoryId}
-            </if>
-            <if
-                    test="shopCondition.parentCategory!=null
-				 and shopCondition.parentCategory.shopCategoryId!=null">
-                and parent_category_id =
-                #{shopCondition.parentCategory.shopCategoryId}
-            </if>-->
-            <if
-                    test="shopCondition.area!=null
+            <if test="shopCondition.area!=null
 				 and shopCondition.area.areaId!=null">
                 and area_id =
                 #{shopCondition.area.areaId}
@@ -152,6 +139,9 @@ VALUES
             </if>
             <if test="shopCondition.enableStatus!=null">
                 and enable_status = #{shopCondition.enableStatus}
+            </if>
+            <if test="shopCondition.owner != null ">
+                and owner_id = #{shopCondition.owner.userId}
             </if>
         </where>
         ORDER BY
@@ -168,22 +158,7 @@ VALUES
             <if test="shopCondition.shopId!=null">
                 and shop_id = #{shopCondition.shopId}
             </if>
-
-            <!--
-            <if
-                    test="shopCondition.shopCategory!=null
-				 and shopCondition.shopCategory.shopCategoryId!=null">
-                and shop_category_id =
-                #{shopCondition.shopCategory.shopCategoryId}
-            </if>
-            <if
-                    test="shopCondition.parentCategory!=null
-				 and shopCondition.parentCategory.shopCategoryId!=null">
-                and parent_category_id =
-                #{shopCondition.parentCategory.shopCategoryId}
-            </if>-->
-            <if
-                    test="shopCondition.area!=null
+            <if test="shopCondition.area!=null
 				 and shopCondition.area.areaId!=null">
                 and area_id =
                 #{shopCondition.area.areaId}
@@ -195,6 +170,9 @@ VALUES
             </if>
             <if test="shopCondition.enableStatus!=null">
                 and enable_status = #{shopCondition.enableStatus}
+            </if>
+            <if test="shopCondition.owner != null ">
+                and owner_id = #{shopCondition.owner.userId}
             </if>
         </where>
     </select>

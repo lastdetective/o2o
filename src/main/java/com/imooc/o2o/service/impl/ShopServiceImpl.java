@@ -2,6 +2,7 @@ package com.imooc.o2o.service.impl;
 
 import com.imooc.o2o.dao.ShopDao;
 import com.imooc.o2o.dto.ShopExecution;
+import com.imooc.o2o.entity.PersonInfo;
 import com.imooc.o2o.entity.Shop;
 import com.imooc.o2o.enums.ShopStateEnum;
 import com.imooc.o2o.exceptions.ShopOperationException;
@@ -36,7 +37,12 @@ public class ShopServiceImpl implements ShopService {
             shop.setCreateTime(new Date());
             shop.setLastEditTime(new Date());
 
+            PersonInfo personInfo = new PersonInfo();
+            personInfo.setUserId(1L);
+            shop.setOwner(personInfo);
+
             int effectedNum = shopDao.insertShop(shop);
+
             if (effectedNum <= 0) {
                 throw new ShopOperationException("店铺创建失败");
             } else {
@@ -54,6 +60,7 @@ public class ShopServiceImpl implements ShopService {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ShopOperationException("addShop error:" + e.getMessage());
         }
 

@@ -26,6 +26,12 @@
         <property name="suffix" value=".html"/>
     </bean>
 
+    <!--  文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8" />
+        <property name="maxUploadSize" value="20971502"></property>
+        <property name="maxInMemorySize" value="20971502"></property>
+    </bean>
     <!-- 4.扫描web相关的bean -->
     <context:component-scan base-package="com.imooc.o2o.web"/>
 </beans>

@@ -1,6 +1,4 @@
 $(function () {
-
-	alert("你好");
 	function getlist(e) {
 		$.ajax({
 			url : "/o2o/shopadmin/getshoplist",
