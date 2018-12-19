@@ -50,7 +50,8 @@ public class ShopManagementController {
      * @return
      */
     @RequestMapping(value = "getshopmanagementinfo", method = RequestMethod.GET)
-    private Map<String, Object> getShopManagementInfo(HttpServletRequest request) { Map<String, Object> modelMap = new HashMap<String, Object>();
+    private Map<String, Object> getShopManagementInfo(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<String, Object>();
         long shopId = HttpServletRequestUtil.getLong(request, "shopId");
         if (shopId <= 0) {
             Object currentShopObj = request.getSession().getAttribute("currentShopObj");
@@ -169,14 +170,18 @@ public class ShopManagementController {
         }
         // 修改店铺信息
         if (shop != null && shop.getShopId() != null) {
+            PersonInfo personInfo = new PersonInfo();
+            personInfo.setUserId(1L);
+            shop.setOwner(personInfo);
             ShopExecution se;
             try {
                 if (shopImg == null) {
                     se = shopService.modifyShop(shop, null, null);
+                } else {
+                    se = shopService.modifyShop(shop,
+                            shopImg.getInputStream(),
+                            shopImg.getOriginalFilename());
                 }
-                se = shopService.modifyShop(shop,
-                        shopImg.getInputStream(),
-                        shopImg.getOriginalFilename());
                 if (se.getState() == ShopStateEnum.SUCCESS.getState()) {
                     modelMap.put("success", true);
                 } else {
@@ -274,5 +279,12 @@ public class ShopManagementController {
             return modelMap;
         }
     }
+
+
+    @RequestMapping(value = "/shopmanagement")
+    private String shopManagement() {
+        return "shopadmin/shopmanagement";
+    }
+
 }
 
