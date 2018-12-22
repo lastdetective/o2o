@@ -10,7 +10,8 @@ import java.util.List;
 public interface ProductCategoryDao {
     /**
      * 通过shopId返回店铺下的 所有商品类别
-     *
      */
     List<ProductCategory> queryProductCategoryList(long shopId);
+
+    int batInsertPoductCategory(List<ProductCategory> productCategoryList);
 }

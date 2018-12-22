@@ -1,5 +1,6 @@
 package com.imooc.o2o.service;
 
+import com.imooc.o2o.dto.ProductCategoryExecution;
 import com.imooc.o2o.entity.ProductCategory;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface ProductCategoryService {
      * @return
      */
     List<ProductCategory> getProductCategoryList(long shopId);
+
+    ProductCategoryExecution batchAddProductCategoryList(List<ProductCategory> productCategoryList);
 }

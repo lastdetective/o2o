@@ -1,14 +1,12 @@
 package com.imooc.o2o.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 
 @Data
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
+@RequiredArgsConstructor
 @Builder
 public class ProductCategory {
 	private Long productCategoryId;

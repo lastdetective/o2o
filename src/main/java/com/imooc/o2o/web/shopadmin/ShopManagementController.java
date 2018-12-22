@@ -2,12 +2,11 @@ package com.imooc.o2o.web.shopadmin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.imooc.o2o.dto.ShopExecution;
-import com.imooc.o2o.entity.Area;
-import com.imooc.o2o.entity.PersonInfo;
-import com.imooc.o2o.entity.Shop;
-import com.imooc.o2o.entity.ShopCategory;
+import com.imooc.o2o.entity.*;
+import com.imooc.o2o.enums.ProductCategoryStateEnum;
 import com.imooc.o2o.enums.ShopStateEnum;
 import com.imooc.o2o.service.AreaService;
+import com.imooc.o2o.service.ProductCategoryService;
 import com.imooc.o2o.service.ShopCategoryService;
 import com.imooc.o2o.service.ShopService;
 import com.imooc.o2o.util.CodeUtil;
@@ -41,6 +40,9 @@ public class ShopManagementController {
 
     @Autowired
     private AreaService areaService;
+
+    @Autowired
+    private ProductCategoryService productCategoryService;
 
 
     /**
@@ -281,10 +283,22 @@ public class ShopManagementController {
     }
 
 
-    @RequestMapping(value = "/shopmanagement")
-    private String shopManagement() {
-        return "shopadmin/shopmanagement";
+    @RequestMapping(value = "listproductcategorys")
+    private Map<String, Object> getProductCategoryList(HttpServletRequest request) {
+        Shop currentShop = (Shop) request.getSession(false).getAttribute("currentShop");
+        Map<String, Object> dataMap = new HashMap<>();
+        List<ProductCategory> productCategoryList = null;
+        if (currentShop != null && currentShop.getShopId() > 0) {
+            productCategoryList = productCategoryService.getProductCategoryList(currentShop.getShopId());
+            dataMap.put("success", true);
+            dataMap.put("productCategoryList", productCategoryList);
+        } else {
+            ProductCategoryStateEnum ps = ProductCategoryStateEnum.INNER_ERROR;
+            dataMap.put("success", false);
+            dataMap.put("errorCode", ps.getState());
+            dataMap.put("errorMsg", ps.getStateInfo());
+        }
+        return dataMap;
     }
-
 }
 

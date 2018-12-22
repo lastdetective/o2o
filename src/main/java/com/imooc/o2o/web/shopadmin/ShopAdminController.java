@@ -20,6 +20,12 @@ public class ShopAdminController {
 
     @RequestMapping(value = "/shopmanagement")
     public String shopManagement() {
-        return "shop/shopmanagement";
+        return "/shop/shopmanagement";
+    }
+
+    @RequestMapping(value = "/productcategorymanagement")
+    public String productCategoryManagement() {
+        return "/shop/productcategorymanagement";
+
     }
 }

@@ -16,6 +16,20 @@
         <!-- 打印查询语句 -->
         <setting name="logImpl" value="STDOUT_LOGGING"/>
     </settings>
+    <!--
+          You can also specify a package where MyBatis will search for beans. For example:
+            <typeAliases>
+            <package name="domain.blog"/>
+            </typeAliases>
+            Each bean found in  domain.blog , if no annotation is found,
+            will be registered as an alias using
+            uncapitalized non-qualified class name of the bean.
+            That is  domain.blog.Author will be registered
+             as  author .
+    -->
+    <typeAliases>
+        <package name="com.imooc.o2o.entity"/>
+    </typeAliases>
     <plugins>
         <!-- com.github.pagehelper为PageHelper类所在包名 -->
         <plugin interceptor="com.github.pagehelper.PageInterceptor">
