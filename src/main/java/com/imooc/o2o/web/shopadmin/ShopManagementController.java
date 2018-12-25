@@ -283,22 +283,8 @@ public class ShopManagementController {
     }
 
 
-    @RequestMapping(value = "listproductcategorys")
-    private Map<String, Object> getProductCategoryList(HttpServletRequest request) {
-        Shop currentShop = (Shop) request.getSession(false).getAttribute("currentShop");
-        Map<String, Object> dataMap = new HashMap<>();
-        List<ProductCategory> productCategoryList = null;
-        if (currentShop != null && currentShop.getShopId() > 0) {
-            productCategoryList = productCategoryService.getProductCategoryList(currentShop.getShopId());
-            dataMap.put("success", true);
-            dataMap.put("productCategoryList", productCategoryList);
-        } else {
-            ProductCategoryStateEnum ps = ProductCategoryStateEnum.INNER_ERROR;
-            dataMap.put("success", false);
-            dataMap.put("errorCode", ps.getState());
-            dataMap.put("errorMsg", ps.getStateInfo());
-        }
-        return dataMap;
-    }
+
+
+
 }
 

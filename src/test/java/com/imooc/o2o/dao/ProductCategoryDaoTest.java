@@ -34,9 +34,14 @@ public class ProductCategoryDaoTest extends BaseTest {
         productCategoryList.add(productCategory1);
         productCategoryList.add(productCategory2);
         int effectNum = productCategoryDao.batInsertPoductCategory(productCategoryList);
-        assertEquals(effectNum,2);
-
-
+        assertEquals(effectNum, 2);
     }
 
+
+    @Test
+    public void testDeleteProductCategory() {
+        long shopId = 31;
+        long productCategory = 5L;
+        System.out.println(productCategoryDao.deleteProductCategory(productCategory, shopId));
+    }
 }

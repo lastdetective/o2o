@@ -2,6 +2,7 @@ package com.imooc.o2o.service.impl;
 
 import com.imooc.o2o.dao.ProductCategoryDao;
 import com.imooc.o2o.dto.ProductCategoryExecution;
+import com.imooc.o2o.dto.ShopExecution;
 import com.imooc.o2o.entity.ProductCategory;
 import com.imooc.o2o.enums.ProductCategoryStateEnum;
 import com.imooc.o2o.exceptions.ProductCategoryOperationException;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2018/11/4.
@@ -50,5 +53,28 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
         } else {
             return new ProductCategoryExecution(ProductCategoryStateEnum.EMPTY_LIST);
         }
+    }
+
+    /**
+     * 删除某个商品类别
+     *
+     * @param shopId
+     * @param productCategoryId
+     * @return
+     */
+    @Override
+    public ProductCategoryExecution deleteProductCategory(long shopId, long productCategoryId)
+            throws ProductCategoryOperationException {
+        try {
+            int effectNum = productCategoryDao.deleteProductCategory(productCategoryId, shopId);
+            if (effectNum > 0) {
+                return new ProductCategoryExecution(ProductCategoryStateEnum.SUCCESS);
+            } else {
+                throw new ProductCategoryOperationException("商品类别删除失败");
+            }
+        } catch (Exception e) {
+            throw new ProductCategoryOperationException("delete productCategory error" + e.getMessage());
+        }
+
     }
 }

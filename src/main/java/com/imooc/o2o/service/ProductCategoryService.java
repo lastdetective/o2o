@@ -18,4 +18,6 @@ public interface ProductCategoryService {
     List<ProductCategory> getProductCategoryList(long shopId);
 
     ProductCategoryExecution batchAddProductCategoryList(List<ProductCategory> productCategoryList);
+
+    ProductCategoryExecution deleteProductCategory(long shopId, long productCategoryId);
 }

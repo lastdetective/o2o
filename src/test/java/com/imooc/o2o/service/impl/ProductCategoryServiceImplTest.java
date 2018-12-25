@@ -40,4 +40,9 @@ public class ProductCategoryServiceImplTest extends BaseTest {
     }
 
 
-} 
+    public void testDeleteProductCategory() {
+     //   System.out.println(productCategoryService.deleteProductCategory());
+    }
+
+
+}
