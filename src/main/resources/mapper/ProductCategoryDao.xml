@@ -34,4 +34,10 @@ FROM
           WHERE `product_category_id` = #{productCategoryId}
           AND `shop_id`= #{shopId}
     </delete>
+
+    <delete id="deleteProduct" >
+        delete from `o2o`.`tb_product`
+        WHERE `product_category_id` = #{productCategoryId}
+          AND `shop_id`= #{shopId}
+    </delete>
 </mapper>

@@ -64,19 +64,31 @@ newButton.onclick = function () {
 
 // 移除某个项目 这里使用 fetch 替换了的 .ajax
 function removeStoredItem(deleteUrl, tempProductCategoryId) {
-    var data = {tempProductCategoryId : tempProductCategoryId}
+    var data = {tempProductCategoryId: tempProductCategoryId}
     alert(JSON.stringify(data));
     alert(tempProductCategoryId)
     $.confirm("确定要删除吗？", function () {
         fetch(deleteUrl,
-            {method: 'POST',body:JSON.stringify(data),
-                headers: new Headers({
-                    'Content-Type': 'application/json'
-                })
-            })
-            .then(function (response) {
-                alert(JSON.stringify(response));
-            });
-    });
+            {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers:
+                    new Headers({
+                        'Content-Type': 'application/json'
+                    })
+            }).then(response => response.json()).then(response => {
+        console.log(JSON.stringify(response))
+        if (response.success) {
+            $.toast("删除成功")
 
+        }
+    }
+    )
+        /* .then((responseData)=>{
+             debugger;
+             var data2 = responseData.json();
+             alert(responseData.resultMap);
+             console.log(JSON.stringify(responseData))
+     })*/
+    });
 }

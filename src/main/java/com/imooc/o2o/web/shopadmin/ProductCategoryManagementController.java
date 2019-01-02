@@ -57,9 +57,6 @@ public class ProductCategoryManagementController {
     private Map<String, Object> removeProductCategory(@RequestBody Map<String, Long> param, HttpServletRequest request) {
         Map<String, Object> resultMap = new HashMap<>();
         Long productCategoryId = param.get("tempProductCategoryId");
-
-
-        String aaa = request.getParameter("tempProductCategoryId");
         if (productCategoryId != null && productCategoryId > 0) {
             try {
                 Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");

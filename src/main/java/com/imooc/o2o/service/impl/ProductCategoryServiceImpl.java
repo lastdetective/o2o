@@ -66,7 +66,11 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     public ProductCategoryExecution deleteProductCategory(long shopId, long productCategoryId)
             throws ProductCategoryOperationException {
         try {
+            // 如果删除商品类别 先删除这个店铺该类别下的所有商品
+
+            int deleteproduct = productCategoryDao.deleteProduct(productCategoryId, shopId);
             int effectNum = productCategoryDao.deleteProductCategory(productCategoryId, shopId);
+
             if (effectNum > 0) {
                 return new ProductCategoryExecution(ProductCategoryStateEnum.SUCCESS);
             } else {
