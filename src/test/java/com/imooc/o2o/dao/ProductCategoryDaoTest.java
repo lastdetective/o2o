@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 这样写 可以让这个方法称为一个静态的方法，从而简化书写
+ */
 import static junit.framework.TestCase.assertEquals;
 
 public class ProductCategoryDaoTest extends BaseTest {

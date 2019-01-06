@@ -1,6 +1,7 @@
 package com.imooc.o2o.service.impl;
 
 import com.imooc.o2o.dao.ShopDao;
+import com.imooc.o2o.dto.ImageHolder;
 import com.imooc.o2o.dto.ShopExecution;
 import com.imooc.o2o.entity.PersonInfo;
 import com.imooc.o2o.entity.Shop;
@@ -74,7 +75,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public ShopExecution modifyShop(Shop shop, InputStream shopInputStream, String fileName) throws ShopOperationException {
+    public ShopExecution modifyShop(Shop shop, ImageHolder imageHolder) throws ShopOperationException {
         // 1.判断是否需要处理
         if (shop == null || shop.getShopId() == null) {
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
@@ -82,12 +83,12 @@ public class ShopServiceImpl implements ShopService {
 
             try {
                 // 判断修改的信息是否传入了图片
-                if (shopInputStream != null && fileName != null && !"".equals(fileName)) {
+                if (imageHolder.getImage() != null && imageHolder.getImageName() != null && !"".equals(imageHolder.getImageName())) {
                     Shop tempShop = shopDao.queryByShopId(shop.getShopId());
                     if (tempShop.getShopImg() != null) {
                         ImageUtil.deleteFileOrPath(tempShop.getShopImg());
                     }
-                    addShopImg(shop, shopInputStream, fileName);
+                    addShopImg(shop, imageHolder.getImage(), imageHolder.getImageName());
                 }
                 // 修改
                 shop.setLastEditTime(new Date());
@@ -125,13 +126,17 @@ public class ShopServiceImpl implements ShopService {
         } else {
             shopExecution.setState(ShopStateEnum.INNER_ERROR.getState());
         }
-         return shopExecution;
+        return shopExecution;
     }
 
     public void addShopImg(Shop shop, InputStream shopImgInputStream, String fileName) {
         // 获取shop图片的目录的相对路径
+
         String dest = PathUtil.getShopImagePath(shop.getShopId());
-        String shopImgAddr = ImageUtil.generateThumbnail(shopImgInputStream, fileName, dest);
+        ImageHolder imageHolder = new ImageHolder();
+        imageHolder.setImage(shopImgInputStream);
+        imageHolder.setImageName(fileName);
+        String shopImgAddr = ImageUtil.generateThumbnail(imageHolder, dest);
         shop.setShopImg(shopImgAddr);
 
     }

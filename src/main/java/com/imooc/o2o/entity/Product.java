@@ -1,16 +1,15 @@
 package com.imooc.o2o.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-@Data
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
+@Getter
+@Setter
+@RequiredArgsConstructor
 @Builder
+@AllArgsConstructor
 public class Product implements Serializable{
 
 	/**
