@@ -5,7 +5,6 @@ import com.imooc.o2o.dto.ProductExecution;
 import com.imooc.o2o.entity.Product;
 import com.imooc.o2o.exceptions.ProductOperationException;
 
-import java.io.InputStream;
 import java.util.List;
 
 public interface ProductService {
@@ -22,4 +21,21 @@ public interface ProductService {
             // List<String> productImgNameList
             List<ImageHolder> productImgList
     ) throws ProductOperationException;
+
+    /**
+     * 查询商品列表并分页
+     *
+     * @param productCondition
+     * @param pageIndex
+     * @param pageSize
+     * @return
+     */
+    ProductExecution getProductList(Product productCondition, int pageIndex, int pageSize);
+
+
+    Product getProductById(long ProductId);
+
+    ProductExecution modifyProduct(Product product, ImageHolder thumbnail, List<ImageHolder> productImgHolderList)
+            throws ProductOperationException;
+
 }

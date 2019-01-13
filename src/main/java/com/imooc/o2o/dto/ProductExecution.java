@@ -2,10 +2,15 @@ package com.imooc.o2o.dto;
 
 import com.imooc.o2o.entity.Product;
 import com.imooc.o2o.enums.ProductStateEnum;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 @Getter
+@Setter
+@RequiredArgsConstructor
 public class ProductExecution {
     /**
      * 结果状态

@@ -10,6 +10,7 @@ import com.imooc.o2o.enums.ProductStateEnum;
 import com.imooc.o2o.exceptions.ProductOperationException;
 import com.imooc.o2o.service.ProductService;
 import com.imooc.o2o.util.ImageUtil;
+import com.imooc.o2o.util.PageCalculator;
 import com.imooc.o2o.util.PathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,66 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public ProductExecution getProductList(Product productCondition, int pageIndex, int pageSize) {
+
+        int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+        List<Product> productList = productDao.queryProductList(productCondition, rowIndex, pageSize);
+        int count = productDao.queryProductCount(productCondition);
+        ProductExecution productExecution = new ProductExecution();
+        productExecution.setProductList(productList);
+        productExecution.setCount(count);
+        return productExecution;
+    }
+
+    @Override
+    public Product getProductById(long productId) {
+
+        return productDao.queryProductById(productId);
+    }
+
+    @Override
+    public ProductExecution modifyProduct(Product product, ImageHolder thumbnail, List<ImageHolder> productImgHolderList) throws ProductOperationException {
+        if (product == null || product.getProductId() == null) {
+            return new ProductExecution(ProductStateEnum.EMPTY);
+        }
+        product.setLastEditTime(new Date());
+        // 如果有缩略图存在
+        if (thumbnail != null) {
+            // 先删除原来的照片
+            Product tempProduct = productDao.queryProductById(product.getProductId());
+            if (tempProduct.getImgAddr() != null) {
+                ImageUtil.deleteFileOrPath(tempProduct.getImgAddr());
+            }
+            //
+            addThumbnail(product, thumbnail);
+        }
+        // 如果有新的详情图片存在，则先删除后，后添加
+        if (productImgHolderList != null && productImgHolderList.size() > 0) {
+            List<ProductImg> oldProductImgList = productImgDao.queryProductImgList(product.getProductId());
+            // 如果之前有照片，则将之前的照片删除
+            if (oldProductImgList != null && oldProductImgList.size() > 0) {
+                oldProductImgList.stream().forEach(oldProductImg -> {
+                    ImageUtil.deleteFileOrPath(oldProductImg.getImgAddr());
+                });
+                productImgDao.deleteProductImgByProductId(product.getProductId());
+                addProductImgList(product, productImgHolderList);
+            }
+        }
+        // 更新product的其他信息
+
+        try {
+            int effectedNum = productDao.updateProduct(product);
+            if (effectedNum < 1) {
+                throw new ProductOperationException("更新商品信息失败");
+            }
+            return new ProductExecution(ProductStateEnum.SUCCESS, product);
+
+        } catch (Exception e) {
+            throw new ProductOperationException("更新产品信息失败" + e.toString());
+        }
+    }
+
     private void addProductImgList(Product product, List<ImageHolder> productImgHolderList) {
         String destination = PathUtil.getShopImagePath(product.getShop().getShopId());
         List<ProductImg> productImgList = new ArrayList<>();
@@ -74,6 +135,15 @@ public class ProductServiceImpl implements ProductService {
             productImgList.add(productImg);
         });
 
+      /*  for (ImageHolder productImgHolder : productImgHolderList) {
+            String imgAddr = ImageUtil.generateNormalImg(productImgHolder, destination);
+            ProductImg productImg = ProductImg.builder()
+                    .imgAddr(imgAddr)
+                    .productId(product.getProductId())
+                    .createTime(new Date()).build();
+            productImgList.add(productImg);
+
+        }*/
         // 如果有图片 就批量添加图片
         if (productImgList != null && productImgList.size() > 0) {
             try {
@@ -100,4 +170,5 @@ public class ProductServiceImpl implements ProductService {
         String thumbnailAddr = ImageUtil.generateThumbnail(thumbnail, destination);
         product.setImgAddr(thumbnailAddr);
     }
+
 }

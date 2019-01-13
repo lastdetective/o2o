@@ -3,25 +3,47 @@
 <mapper namespace="com.imooc.o2o.dao.ProductImgDao">
 
 
-  <insert id="batchInsertProductImg" parameterType="list">
-    INSERT INTO `o2o`.`tb_product_img` (
-  `img_addr`,
-  `img_desc`,
-  `priority`,
-  `create_time`,
-  `product_id`
-)
-VALUES
-<foreach collection="list" item="item" separator="," index="index">
+    <insert id="batchInsertProductImg" parameterType="list">
+        INSERT INTO `o2o`.`tb_product_img` (
+        `img_addr`,
+        `img_desc`,
+        `priority`,
+        `create_time`,
+        `product_id`
+        )
+        VALUES
+        <foreach collection="list" item="item" separator="," index="index">
 
-  (
- #{item.imgAddr} ,
-  #{item.imgDesc},
-  #{item.priority},
-  #{item.createTime},
-  #{item.productId}
-  )
-</foreach>
-  </insert>
+            (
+            #{item.imgAddr} ,
+            #{item.imgDesc},
+            #{item.priority},
+            #{item.createTime},
+            #{item.productId}
+            )
+        </foreach>
+    </insert>
+    <delete id="deleteProductImgByProductId">
+        <!-- 具体的sql -->
+        DELETE FROM
+        tb_product_img
+        WHERE
+        product_id =
+        #{productId}
+    </delete>
+
+    <select id="queryProductImgList" resultType="com.imooc.o2o.entity.ProductImg">
+		SELECT
+		product_img_id,
+		img_addr,
+		img_desc,
+		priority,
+		create_time,
+		product_id
+		FROM tb_product_img
+		WHERE product_id=#{productId}
+		ORDER BY
+		product_img_id ASC
+	</select>
 
 </mapper>

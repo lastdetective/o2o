@@ -30,6 +30,7 @@ import java.util.List;
  * @since <pre>һ�� 6, 2019</pre>
  */
 import static junit.framework.TestCase.assertEquals;
+
 public class ProductServiceImplTest extends BaseTest {
     @Autowired
     private ProductService productService;
@@ -51,16 +52,19 @@ public class ProductServiceImplTest extends BaseTest {
 
         Product product = new Product();
         Shop shop = new Shop();
-        shop.setShopId(20L);
+        shop.setShopId(16L);
         ProductCategory pc = new ProductCategory();
         pc.setProductCategoryId(13L);
         product.setShop(shop);
         product.setProductCategory(pc);
-        product.setProductName("测试商品20190116");
-        product.setProductDesc("测试 desc");
+        product.setProductName("红米fssssfs4X");
+        product.setProductDesc("红米Notedsfsd4X desc");
         product.setPriority(22);
         product.setCreateTime(new Date());
         product.setEnableStatus(ProductStateEnum.SUCCESS.getState());
+        product.setNormalPrice("100");
+        product.setPromotionPrice("80");
+        product.setPoint(38);
 
         // 创建文缩略图的输入流
         File thumbnailFile = new File("D:\\testpic\\thumbnail.jpg");
@@ -78,7 +82,6 @@ public class ProductServiceImplTest extends BaseTest {
         producImg1Holder.setImageName(producImg1.getName());
 
 
-
         File producImg2 = new File("D:\\testpic\\1.jpg");
         InputStream producImg2InputStream = new FileInputStream(producImg1);
         ImageHolder producImg2Holder = new ImageHolder();
@@ -88,8 +91,13 @@ public class ProductServiceImplTest extends BaseTest {
         List<ImageHolder> imageHolderList = new ArrayList<>();
         imageHolderList.add(producImg1Holder);
         imageHolderList.add(producImg2Holder);
-        ProductExecution pe = productService.addProduct(product,thumbnailHolder,imageHolderList);
-        assertEquals(ProductStateEnum.SUCCESS.getState(),pe.getState());
+        ProductExecution pe = productService.addProduct(product, thumbnailHolder, imageHolderList);
+        productService.addProduct(product, thumbnailHolder, imageHolderList);
+
+        productService.addProduct(product, thumbnailHolder, imageHolderList);
+        productService.addProduct(product, thumbnailHolder, imageHolderList);
+
+        //   assertEquals(ProductStateEnum.SUCCESS.getState(), pe.getState());
 
     }
 
@@ -98,18 +106,52 @@ public class ProductServiceImplTest extends BaseTest {
      * Method: addProductImgList(Product product, List<ImageHolder> productImgHolderList)
      */
     @Test
-    public void testAddProductImgList() throws Exception {
-//TODO: Test goes here... 
-/* 
-try { 
-   Method method = ProductServiceImpl.getClass().getMethod("addProductImgList", Product.class, List<ImageHolder>.class); 
-   method.setAccessible(true); 
-   method.invoke(<Object>, <Parameters>); 
-} catch(NoSuchMethodException e) { 
-} catch(IllegalAccessException e) { 
-} catch(InvocationTargetException e) { 
-} 
-*/
+    public void testModifyProduct() throws Exception {
+        Product product = new Product();
+        Shop shop = new Shop();
+        shop.setShopId(16L);
+        ProductCategory pc = new ProductCategory();
+        pc.setProductCategoryId(13L);
+        product.setShop(shop);
+        product.setProductCategory(pc);
+        //  product.setProductName("");
+        product.setProductDesc("测试Hon红米M3211332");
+        product.setPriority(22);
+        product.setCreateTime(new Date());
+        product.setEnableStatus(ProductStateEnum.SUCCESS.getState());
+        product.setNormalPrice("100");
+        product.setPromotionPrice("80");
+        product.setPoint(38);
+        product.setProductId(10L);
+
+        // 创建文缩略图的输入流
+        File thumbnailFile = new File("D:\\o2ophotoexample\\mi1.PNG");
+        InputStream thumbnailInputStream = new FileInputStream(thumbnailFile);
+        ImageHolder thumbnailHolder = new ImageHolder();
+        thumbnailHolder.setImage(thumbnailInputStream);
+        thumbnailHolder.setImageName(thumbnailFile.getName());
+
+
+        // 创建商品详情的缩略图
+        File producImg1 = new File("D:\\o2ophotoexample\\2.jpg");
+        InputStream producImg1InputStream = new FileInputStream(producImg1);
+        ImageHolder producImg1Holder = new ImageHolder();
+        producImg1Holder.setImage(producImg1InputStream);
+        producImg1Holder.setImageName(producImg1.getName());
+
+
+        File producImg2 = new File("D:\\o2ophotoexample\\3.jpg");
+        InputStream producImg2InputStream = new FileInputStream(producImg2);
+        ImageHolder producImg2Holder = new ImageHolder();
+        producImg2Holder.setImage(producImg2InputStream);
+        producImg2Holder.setImageName(producImg2.getName());
+
+        List<ImageHolder> imageHolderList = new ArrayList<>();
+        imageHolderList.add(producImg1Holder);
+        imageHolderList.add(producImg2Holder);
+        ProductExecution pe = productService.modifyProduct(product, thumbnailHolder, imageHolderList);
+        assertEquals(ProductStateEnum.SUCCESS.getState(), pe.getState());
+
     }
 
     /**
@@ -129,5 +171,6 @@ try {
 } 
 */
     }
+
 
 } 
