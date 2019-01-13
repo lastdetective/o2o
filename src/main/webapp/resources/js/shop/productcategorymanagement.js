@@ -2,7 +2,6 @@ $(function () {
 
     var shopId = getQueryString("shopId");
     var listUrl = '/o2o/shopadmin/listproductcategorys?shopId=' + shopId;
-    //  var addUrl = '/o2o/shop/addproductcategorys';
     var deleteUrl = '/o2o/shopadmin/removeproductcategory';
     $.getJSON(listUrl,
         function (data) {

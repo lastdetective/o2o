@@ -76,5 +76,10 @@ public class ProductDaoTest extends BaseTest {
         int count = productDao.queryProductCount(product);
         assertEquals(7, count);
     }
+
+    @Test
+    public void testUpdateProductCategoryToNull() {
+        productDao.updateProductCategoryToNull(6L);
+    }
 }
 

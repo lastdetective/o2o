@@ -21,4 +21,7 @@ public interface ProductDao {
     List<Product> queryProductList(@Param("productCondition") Product productCondition, @Param("rowIndex") int rowIndex, @Param("pageSize") int pageSize);
 
     int queryProductCount(@Param("productCondition") Product productCondition);
+
+
+    int updateProductCategoryToNull(long productCategoryId);
 }

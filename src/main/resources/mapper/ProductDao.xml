@@ -217,4 +217,15 @@ VALUES
             </if>
         </where>
     </select>
+
+    <update id="updateProductCategoryToNull" parameterType="long">
+
+        update
+        tb_product
+        set
+        product_category_id = null
+        where product_category_id =
+        #{productCategoryId}
+
+    </update>
 </mapper>

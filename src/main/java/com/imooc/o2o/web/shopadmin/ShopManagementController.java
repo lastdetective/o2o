@@ -84,7 +84,7 @@ public class ShopManagementController {
          * 这里是为了保证 在现在的情况下 有值
          */
         PersonInfo user = new PersonInfo();
-        user.setUserId(8L);
+        user.setUserId(1L);
         request.getSession().setAttribute("user", user);
         PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
 

@@ -1,6 +1,7 @@
 package com.imooc.o2o.service.impl;
 
 import com.imooc.o2o.dao.ProductCategoryDao;
+import com.imooc.o2o.dao.ProductDao;
 import com.imooc.o2o.dto.ProductCategoryExecution;
 import com.imooc.o2o.dto.ShopExecution;
 import com.imooc.o2o.entity.ProductCategory;
@@ -28,6 +29,9 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
      */
     @Autowired
     private ProductCategoryDao productCategoryDao;
+
+    @Autowired
+    private ProductDao productDao;
 
     @Override
     public List<ProductCategory> getProductCategoryList(long shopId) {
@@ -65,8 +69,19 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Override
     public ProductCategoryExecution deleteProductCategory(long shopId, long productCategoryId)
             throws ProductCategoryOperationException {
+        // 解除 tb_product 里的商品与该 productCategoryId 的关联
         try {
-            // 如果删除商品类别 先删除这个店铺该类别下的所有商品
+            int effectedNum = productDao.updateProductCategoryToNull(productCategoryId);
+            if (effectedNum < 0) {
+                throw new RuntimeException("商品类别更新失败");
+            }
+
+        } catch (Exception e) {
+            throw new RuntimeException("商品类别更新失败");
+        }
+        // 删除该 productCategory
+        try {
+
 
             int deleteproduct = productCategoryDao.deleteProduct(productCategoryId, shopId);
             int effectNum = productCategoryDao.deleteProductCategory(productCategoryId, shopId);

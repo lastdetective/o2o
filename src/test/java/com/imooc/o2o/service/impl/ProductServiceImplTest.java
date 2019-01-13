@@ -52,9 +52,9 @@ public class ProductServiceImplTest extends BaseTest {
 
         Product product = new Product();
         Shop shop = new Shop();
-        shop.setShopId(16L);
+        shop.setShopId(31L);
         ProductCategory pc = new ProductCategory();
-        pc.setProductCategoryId(13L);
+        pc.setProductCategoryId(6L);
         product.setShop(shop);
         product.setProductCategory(pc);
         product.setProductName("红米fssssfs4X");
@@ -82,7 +82,7 @@ public class ProductServiceImplTest extends BaseTest {
         producImg1Holder.setImageName(producImg1.getName());
 
 
-        File producImg2 = new File("D:\\testpic\\1.jpg");
+        File producImg2 = new File("D:\\testpic\\2.jpg");
         InputStream producImg2InputStream = new FileInputStream(producImg1);
         ImageHolder producImg2Holder = new ImageHolder();
         producImg2Holder.setImage(producImg2InputStream);
