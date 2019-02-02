@@ -1,15 +1,13 @@
 package com.imooc.o2o.entity;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.util.Date;
 
 @Data
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Builder
+@RequiredArgsConstructor
 public class HeadLine {
     /**
      * 头条id
