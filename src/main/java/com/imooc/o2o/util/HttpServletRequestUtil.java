@@ -15,8 +15,11 @@ public class HttpServletRequestUtil {
 
     public static long getLong(HttpServletRequest request, String key) {
         try {
-            return Long.valueOf(request.getParameter(key));
-
+            String value = request.getParameter(key);
+            if (value != null && !"".equals(value)) {
+                return Long.valueOf(value);
+            }
+            return -1;
         } catch (Exception e) {
             e.printStackTrace();
 

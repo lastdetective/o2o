@@ -11,4 +11,14 @@ public class FrontendController {
     public String index() {
         return "frontend/index";
     }
+
+    @GetMapping("shoplist")
+    public String shopList() {
+        return "frontend/shoplist";
+    }
+
+    @GetMapping("shopdetail")
+    public String productDetail() {
+        return "frontend/shopdetail";
+    }
 }

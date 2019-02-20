@@ -20,4 +20,6 @@ public interface ProductCategoryService {
     ProductCategoryExecution batchAddProductCategoryList(List<ProductCategory> productCategoryList);
 
     ProductCategoryExecution deleteProductCategory(long shopId, long productCategoryId);
+
+    List<ProductCategory> getByShopId(long shopId);
 }
